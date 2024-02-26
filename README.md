@@ -1,3 +1,5 @@
+![In a galaxy far away](./documentation/images/intro-img.webp)
+
 # UKTV - Fron end dev task
 
 Here you can find the source code of the App()
@@ -6,7 +8,13 @@ Working result in Vercel [here](https://uktv-fe-dalaranunions-projects.vercel.ap
 
 ## Design / Concept
 
+![Design Mood board](./documentation/images/mood-board.png)
+
 Thought it wasn't necessary I wanted to add a personal touch to this fun project. Rather having a plain app, I wanted to add a bit of the StarWars aesthetic to it. I first took the \*.fig file and designed it in Adobe XD as I don't have a Figma paid versions, so I couldn't extract the pixels.
+
+![UI concept](./documentation/images/ui-01.png)
+
+After some though and quick testing with different colours I decided to choose these colours and aesthetic. A big influence was the UI from a StarWars video game. I trust the arists who made that UI!
 
 Design file [here](https://xd.adobe.com/view/62a43562-60cb-494b-af17-9baa94caa400-37f7/screen/2ef31ecc-c06b-499d-b545-9d477cb9d028/specs/).
 
