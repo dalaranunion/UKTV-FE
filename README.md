@@ -23,11 +23,11 @@ Design file [here](https://xd.adobe.com/view/62a43562-60cb-494b-af17-9baa94caa40
 Components tree
 
 1.  **Search** - inside App()
-    1a. Button - Buttons.tsx
+    &nbsp;&nbsp;&nbsp;&nbsp;1a. Button - Buttons.tsx
 2.  **Results component** - resultsComponent.tsx
-    2a. Button - Buttons.tsx
-    2b. Results number - resultsNumber.tsx
-    2c. Iterator grid - iteratorGrid.tsx - Card - card.tsx
+    &nbsp;&nbsp;&nbsp;&nbsp;2a. Button - Buttons.tsx
+    &nbsp;&nbsp;&nbsp;&nbsp;2b. Results number - resultsNumber.tsx
+    &nbsp;&nbsp;&nbsp;&nbsp;2c. Iterator grid - iteratorGrid.tsx - Card - card.tsx
 
 ### Components
 
