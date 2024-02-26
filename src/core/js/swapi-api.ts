@@ -38,7 +38,7 @@ const fetchData = async (searchTerm: string): Promise<Result[]> => {
           detail: { searchTerm: searchTerm, data: dataResults },
         })
       );
-    }, 4000);
+    }, 2000);
 
     return dataResults;
   } catch (error) {

@@ -37,8 +37,6 @@ function App() {
     // Once fetching is complete then finish animation and load results
     setResultsData(event.detail.data);
     setResultsLoaded(true);
-    // Everything starts from this function here
-    console.log(event);
   }
 
   window.addEventListener("fetchDataStart", fetchDataStartHandler);
@@ -52,7 +50,8 @@ function App() {
       const data = fetchData(formData.get("searchtext"));
       // This was meant to be a message to the user to give specific search terms
       // But was out of time
-      if (!data.length) console.log("Wrong search terms");
+      if (!data.length)
+        console.log("Wrong search terms, search starships or films or vehicles");
     }
     return (
       <form className="searchbox-form pt-2 pr-2 pl-2 pb-2" onSubmit={onSubmitHandler}>
