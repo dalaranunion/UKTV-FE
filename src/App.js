@@ -62,6 +62,7 @@ function App() {
           name="searchtext"
           minLength="2"
           type="text"
+          placeholder="Find Vehicles, Films, or Spacecrafts..."
         ></input>
         <Buttons
           classes="ml-2 searchbox-btn"

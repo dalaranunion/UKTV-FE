@@ -1,3 +1,17 @@
+# UKTV - Fron end dev task
+
+Here you can find the source code of the App()
+
+Working result in Vercel [here](https://uktv-me65nrxvo-dalaranunions-projects.vercel.app/).
+
+## Design / Concept
+
+Thought it wasn't necessary I wanted to add a personal touch to this fun project. Rather having a plain app, I wanted to add a bit of the StarWars aesthetic to it. I first took the \*.fig file and designed it in Adobe XD as I don't have a Figma paid versions, so I couldn't extract the pixels.
+
+Design file [here](https://xd.adobe.com/view/62a43562-60cb-494b-af17-9baa94caa400-37f7/screen/2ef31ecc-c06b-499d-b545-9d477cb9d028/specs/).
+
+## Implementation
+
 Components tree
 
 1.  **Search** - inside App()
