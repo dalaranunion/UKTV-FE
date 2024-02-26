@@ -22,12 +22,28 @@ Design file [here](https://xd.adobe.com/view/62a43562-60cb-494b-af17-9baa94caa40
 
 Components tree
 
-1.  **Search** - inside App()
-    &nbsp;&nbsp;&nbsp;&nbsp;1a. Button - Buttons.tsx
-2.  **Results component** - resultsComponent.tsx
-    &nbsp;&nbsp;&nbsp;&nbsp;2a. Button - Buttons.tsx
-    &nbsp;&nbsp;&nbsp;&nbsp;2b. Results number - resultsNumber.tsx
-    &nbsp;&nbsp;&nbsp;&nbsp;2c. Iterator grid - iteratorGrid.tsx - Card - card.tsx
+```mermaid
+graph TD
+subgraph App
+subgraph ide1 [First Block]
+A[Main App] -- Step 1: Pass Response --> C[Results number]
+A[Main App] --> B[Search]
+end
+
+B --> D((Button))
+C --> D((Button))
+subgraph ide2 [Second Block]
+E --> F((ResultsNum))
+C --  Step 2: Map Data --> E[Iterator grid]
+E -- Step 3: Pass data --> G((Card))
+end
+end
+G -.- H{components}
+F -.- H{components}
+D -.- H{components}
+
+
+```
 
 ### Components
 
