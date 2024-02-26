@@ -167,6 +167,15 @@ class JumpToHyperspace {
         iVY: star.STATE.vY,
       };
     }
+    setTimeout(() => {
+      this.STATE = {
+        ...this.STATE,
+        initiating: false,
+        initiateTimestamp: undefined,
+      };
+      TweenMax.to(this.STATE, 0.25, { velocity: VELOCITY_INC, bgAlpha: 0 });
+      this.jump();
+    }, 1800);
   };
   jump = () => {
     this.STATE = {
@@ -179,31 +188,34 @@ class JumpToHyperspace {
       bgAlpha: 0.75,
       sizeInc: JUMP_SIZE_INC,
     });
-    setTimeout(() => {
-      this.STATE = {
-        ...this.STATE,
-        jumping: false,
-      };
-      TweenMax.to(this.STATE, 0.25, {
-        bgAlpha: 0,
-        velocity: VELOCITY_INC,
-        sizeInc: SIZE_INC,
-      });
-    }, 1500);
   };
   enter = () => {
-    if (this.STATE.jumping) return;
+    // if (this.STATE.jumping) return;
     const { initiateTimestamp } = this.STATE;
     this.STATE = {
       ...this.STATE,
       initiating: false,
       initiateTimestamp: undefined,
     };
-    if (new Date().getTime() - initiateTimestamp > 600) {
-      this.jump();
-    } else {
+    // if (new Date().getTime() - initiateTimestamp > 600) {
+    //   this.jump();
+    // } else {
+    //   TweenMax.to(this.STATE, 0.25, { velocity: VELOCITY_INC, bgAlpha: 0 });
+    // }
+
+    setTimeout(() => {
+      this.STATE = {
+        ...this.STATE,
+        jumping: false,
+      };
       TweenMax.to(this.STATE, 0.25, { velocity: VELOCITY_INC, bgAlpha: 0 });
-    }
+
+      TweenMax.to(this.STATE, 0.25, {
+        bgAlpha: 0,
+        velocity: VELOCITY_INC,
+        sizeInc: SIZE_INC,
+      });
+    }, 400);
   };
   bind = () => {
     // this.canvas.addEventListener("mousedown", this.initiate);
