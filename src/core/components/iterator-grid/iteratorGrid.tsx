@@ -13,7 +13,6 @@ interface ResultsGridProps {
 }
 
 function ResultsGrid({ resultData }: ResultsGridProps) {
-  console.log(resultData);
   // If there are no results return nothing
   if (!resultData) return;
 

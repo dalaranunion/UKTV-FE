@@ -1,8 +1,10 @@
 type Result = string[];
 
 const fetchData = async (searchTerm: string): Promise<Result[]> => {
+  // Lowercase any input to avoid casing issues
   searchTerm = searchTerm.toLocaleLowerCase();
 
+  // The searchterms which are allowed are the below if they wont match nothing returns
   const searchTypes = ["starships", "films", "vehicles"];
   if (!searchTypes.includes(searchTerm)) return [];
 
@@ -40,6 +42,7 @@ const fetchData = async (searchTerm: string): Promise<Result[]> => {
 
     return dataResults;
   } catch (error) {
+    // Ideally errors should display under the searchform.
     console.error("Error:", error);
     throw new Error("Failed to fetch data.");
   }

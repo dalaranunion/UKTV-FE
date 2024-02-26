@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+Components tree
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1.  **Search** - inside App()
+    1a. Button - Buttons.tsx
+2.  **Results component** - resultsComponent.tsx
+    2a. Button - Buttons.tsx
+    2b. Results number - resultsNumber.tsx
+    2c. Iterator grid - iteratorGrid.tsx - Card - card.tsx
 
-## Available Scripts
+### Components
 
-In the project directory, you can run:
+buttons.tsx [resusable] can:
 
-### `npm start`
+- have two versions
+- take svg icons (as react components inline SVGs)
+- take classes in we want to specify from the parent
+- accepts a function from the parent to call when clicked
+- can have type button/submit/rest
+- hide text, for cases we need just an icon
+- It can toggle between states, by accepting an array of objects, usefull when you have a button that toggles from on/off state, this is used for the sorting functionality
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+card.tsx [resusable] can:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- take classes to specify from the parent
+- has a main and a secondary title
+- take an array of rest of the content. I did this as the listed content grows and shrinks per category.
 
-### `npm test`
+resultsNumber.tsx [resusable] can:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Just take a number to display the number of the results
+- It doesn't have too many options since there was no scope to be used flexibily rather is a fixed component used to display info/data
 
-### `npm run build`
+iteratorGrid.tsx [resusable]:
+Its role is processing and structuring the data for rendering within the card. It take an array of data and then with a map function we _map_ the right information to the correct component in a way the component wants it. The iterator is used to _iterate_ an extra step or interface before rendering the card. Ideally I would want to have some extra documentation as to what the iterator wants in terms of input types.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+resultsComponent.tsx
+Just takes the **resultsData** and any classes. ResultData comes as it is from the fetching function and then uses a function **comformData** to change the data to a **readable** structure/format so the iteratorGrid can iterate and render them. Results component was meant to also have an `<aside>` bar to display filtering options. Since it takes the data raw it can do all operations.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### comformData.js
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This function purpose is to restructure the given information into a consistent format so we can be the used by the iterator. It takes an array of objects `dataInput`
+Defines mappings for the main/secondary titles and content using typescript
+Creates an empty array to store (and later `return`) the formatted results.
 
-### `npm run eject`
+How it works:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. It iterates through each object from `dataInput`
+2. For each iteration it creates a newObject
+3. For each iteration it loops through the keys and
+   3a. Checks and matches the main and secondary title based on the mappings
+   3b. Checks and pulls the rest of the content (ignores those we don't need) to add into `newObj.content`
+4. Once all keys are processed the new objects get pushed into the new array
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### space-animation.js
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Is a script taken here from - https://codepen.io/ybensira/pen/byYNBZ
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The idea behind it was when we wait for the API to connect and then pull all the information we show a warp animation, rather a plain background.
+There was the intention to display an looped animation of an SVG file to show the loading.

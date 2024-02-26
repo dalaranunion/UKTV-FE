@@ -10,7 +10,7 @@ import Buttons from "./core/components/buttons/buttons.tsx";
 import ResultsComponent from "./core/components/results-component/resultsComponent.tsx";
 
 // Import JS files
-// This is for the animation stolen
+// This is for the animation
 import "./core/js/space-animation.js";
 // This is used to fetch the data
 import fetchData from "./core/js/swapi-api.ts";
@@ -73,7 +73,6 @@ function App() {
       </form>
     );
   }
-  // ==== RENDER THE APP ====
   return (
     <div id="star-wars-app">
       <header id="page-header" className="guttercontentwidth contentwidth">

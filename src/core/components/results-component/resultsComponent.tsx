@@ -25,9 +25,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ classes, resultData
   resultData = comformData(resultData);
 
   function onClickHandler() {
-    console.log("runs");
     setSortAscending((prevSortAscending) => !prevSortAscending); // Toggle sortAscending
-    // ...
   }
   function sortBy(input: any[], ascending: boolean) {
     return input.sort((a, b) =>

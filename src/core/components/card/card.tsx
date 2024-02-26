@@ -3,6 +3,15 @@ import "./card.css";
 import { ReactComponent as Robot } from "./r2-d2-icon.svg";
 
 /**
+ * @typedef {Object} CardProps
+ * @property {string} [classes] - Additional CSS classes to apply to the component.
+ * @property {string} mainTitle - The main title of the card.
+ * @property {string} secondaryTitle - The optional secondary title of the card.
+ * @property {ContentArray[]} content - An array of content objects defining the rest of card's content.
+ *
+ ** @typedef {Object} ContentArray
+ ** @property {string} title - The title of the content item.
+ ** @property {string} text - The text content of the item.
  *
  */
 
