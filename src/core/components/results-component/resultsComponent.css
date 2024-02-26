@@ -1,0 +1,33 @@
+.results-header {
+    color: var(--palette-01);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.results-sortBy-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.results-area,
+.results-wrap {
+    border: 3px solid var(--palette-02);
+}
+
+.results-wrap {
+    opacity: 0;
+    max-height: 0px;
+    margin-top: 5rem;
+    overflow: hidden;
+    visibility: hidden;
+    transition: opacity 700ms ease;
+}
+
+.results-loaded .results-wrap {
+    opacity: 1;
+    overflow: hidden;
+    visibility: visible;
+    max-height: inherit;
+}

@@ -1,0 +1,11 @@
+.results-number-count {
+    border: 3px solid var(--palette-02);
+    display: inline-block;
+    padding: 5px 10px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.results-number-wrap {
+    border: 3px solid var(--palette-02);
+}

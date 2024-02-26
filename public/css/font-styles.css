@@ -1,0 +1,123 @@
+body {
+    font-family: "Roboto Mono", monospace;
+    font-weight: normal;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizespeed;
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: "kern";
+    -moz-font-feature-settings: "kern";
+    font-feature-settings: "kern";
+    -webkit-font-kerning: normal;
+    -moz-font-kerning: normal;
+    font-kerning: normal;
+    -webkit-font-variant-ligatures: common-ligatures;
+    -moz-font-variant-ligatures: common-ligatures;
+    font-variant-ligatures: common-ligatures;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* ====== FONT STYLING ====== */
+.heading-font {
+    /* font-family: ‘Star Wars’, sans-serif; */
+    font-family: Helvetica, Arial, sans-serif, sans-serif;
+}
+
+.uppercase {
+    text-transform: uppercase;
+    line-height: 1em;
+}
+
+.body-sm {
+    font-size: 0.875em;
+    margin: 0;
+}
+
+.body-lg {
+    font-size: 1.375rem;
+}
+
+.heading-xxxl,
+.heading-xxl,
+.heading-xl,
+.heading-lg,
+.heading-md,
+.heading-sm,
+.heading-xsm {
+    font-weight: inherit;
+}
+
+.regular {
+    font-weight: 400;
+}
+
+.medium {
+    font-weight: 500;
+}
+
+.bold,
+b {
+    font-weight: 600;
+}
+
+.extrabold {
+    font-weight: 700;
+}
+
+.heading-xxxl {
+    font-size: 3.375em;
+    letter-spacing: 0;
+}
+
+.heading-xxl {
+    font-size: 2.5em;
+    letter-spacing: 0;
+}
+
+.heading-xl {
+    font-size: 2.25em;
+    letter-spacing: 0;
+}
+
+.heading-lg {
+    font-size: 1.875em;
+    letter-spacing: 0;
+}
+
+.heading-md {
+    font-size: 1.6em;
+    letter-spacing: 0;
+}
+
+.heading-smd {
+    font-size: 1.43em;
+    letter-spacing: 0;
+}
+
+.heading-sm {
+    font-size: 1.25em;
+    letter-spacing: 0;
+}
+
+.heading-xsm {
+    font-size: 1.125em;
+    letter-spacing: 0;
+}
+
+p {
+    margin: .5rem 0;
+}
+
+a.no-underline {
+    text-decoration: none;
+}
