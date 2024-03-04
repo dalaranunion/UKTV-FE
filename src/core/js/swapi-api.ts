@@ -1,5 +1,3 @@
-type Result = string[];
-
 interface SwapiSchema {
   count: number | null;
   next: string | null;
@@ -7,6 +5,7 @@ interface SwapiSchema {
   results: string[] | null;
 }
 
+const emptyObject = { count: 0, next: null, previous: null, results: [] };
 // Main API URL
 const baseUrl = "https://swapi.dev/api/";
 
@@ -27,7 +26,7 @@ function validSearch(input: string) {
 const fetchData = async (
   searchString: string,
   searchType: string
-): Promise<SwapiSchema[]> => {
+): Promise<SwapiSchema> => {
   // Lowercase any input to avoid casing issues
   searchString = searchString.toLocaleLowerCase().trim();
   searchType = searchType.toLocaleLowerCase();
@@ -44,13 +43,14 @@ const fetchData = async (
     endpoint = `${searchType}/?search=${searchString}`;
   }
 
+  if (!endpoint) return emptyObject;
   const data = await swapiCaller(`${baseUrl}${endpoint}`);
 
   // Returns empty data if there is no data
-  return data ? data : [];
+  return data ? data : emptyObject;
 };
 
-const swapiCaller = async (getRequest: string): Promise<SwapiSchema[]> => {
+const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
   const animation = window.myJump;
   if (!animation) {
     // check if the animation exists in the Window object
@@ -70,9 +70,7 @@ const swapiCaller = async (getRequest: string): Promise<SwapiSchema[]> => {
       animation.enter();
     }, 2000);
 
-    console.log(data);
-
-    return data as SwapiSchema[];
+    return data as SwapiSchema;
   } catch (error) {
     // Ideally errors should display under the searchform.
     console.error("Error:", error);
@@ -80,6 +78,6 @@ const swapiCaller = async (getRequest: string): Promise<SwapiSchema[]> => {
   }
 };
 
-export { fetchData, searchCategories };
+export { fetchData, emptyObject, searchCategories };
 
 export default swapiCaller;

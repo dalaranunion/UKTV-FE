@@ -1,5 +1,5 @@
 import { ReactComponent as Logo } from "./media/svg/logo.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 // Import SVG icons
@@ -10,55 +10,56 @@ import Buttons from "./core/components/buttons/buttons.tsx";
 import ResultsComponent from "./core/components/results-component/resultsComponent.tsx";
 
 // Import JS files
-// This is for the animation
 import "./core/js/space-animation.js";
+
 // This is used to fetch the data
-import { fetchData, searchCategories } from "./core/js/swapi-api.ts";
+import { fetchData, emptyObject, searchCategories } from "./core/js/swapi-api.ts";
 
 function App() {
-  const [searchActive, setSearchActive] = useState(false);
-  const [resultData, setResultsData] = useState(null);
+  const [previousSearchString, setpreviousSearchString] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [pulledData, setPulledData] = useState(emptyObject);
 
-  // The animations are done by adding/remove classes in the <body> element
-  if (searchActive) {
-    document.body.classList.add("search-active");
-  } else document.body.classList.remove("search-active");
+  useEffect(() => {
+    // The animations are done by adding/remove classes in the <body> element
+    if (previousSearchString) {
+      document.body.classList.add("search-active");
+    } else document.body.classList.remove("search-active");
+  }, [isLoading, pulledData, previousSearchString]);
 
   // This is the searchform component
   function SearchForm() {
     // When search button is hit
-    function onSubmitHandler(event) {
+    async function onSubmitHandler(event) {
       event.preventDefault();
       const formData = new FormData(event.target);
 
-      async function pullData() {
-        const data = await fetchData(
-          formData.get("searchString"),
-          formData.get("searchType")
-        );
-        setResultsData(data);
-        console.log("set results");
-        return data.length ? true : false;
+      const data = await fetchData(
+        formData.get("searchString"),
+        formData.get("searchType")
+      );
+      setPulledData(data);
+
+      if (!data) {
+        console.log("Wrong search terms, search starships or films or vehicles");
+        setpreviousSearchString("");
+      } else {
+        setIsLoading(false);
+        setpreviousSearchString(formData.get("searchString"));
       }
 
-      if (!pullData()) {
-        console.log(
-          "Wrong search terms, search starships or films or vehicles"
-        );
-        setSearchActive(false);
-      } else setSearchActive(true);
+      return data.length ? true : false;
     }
+
     return (
-      <form
-        className="searchbox-form pt-2 pr-2 pl-2 pb-2"
-        onSubmit={onSubmitHandler}
-      >
+      <form className="searchbox-form pt-2 pr-2 pl-2 pb-2" onSubmit={onSubmitHandler}>
         <input
           required={true}
           className="searchbox-input"
           name="searchString"
           minLength="2"
           type="text"
+          defaultValue={previousSearchString}
           placeholder="Find Vehicles, Films, or Spacecrafts..."
         ></input>
         <select className="searchbox-select" name="searchType" required={true}>
@@ -81,6 +82,7 @@ function App() {
       </form>
     );
   }
+
   return (
     <div id="star-wars-app">
       <header id="page-header" className="guttercontentwidth contentwidth">
@@ -94,7 +96,7 @@ function App() {
           </h2>
           <SearchForm />
         </div>
-        <ResultsComponent resultData={resultData} />
+        <ResultsComponent resultData={pulledData} />
       </main>
     </div>
   );

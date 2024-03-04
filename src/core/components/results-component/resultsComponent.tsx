@@ -22,23 +22,19 @@ interface SwapiSchema {
   results: string[] | null;
 }
 interface ResultsComponentProps {
-  resultData: SwapiSchema[];
+  resultData: SwapiSchema;
   classes?: string;
 }
 
-const ResultsComponent: React.FC<ResultsComponentProps> = ({
-  classes,
-  resultData,
-}) => {
-  console.log(resultData);
-  const [results, setResults] = useState(null);
+const ResultsComponent: React.FC<ResultsComponentProps> = ({ classes, resultData }) => {
+  const [results, setResults] = useState([]);
   const [sortAscending, setSortAscending] = useState<boolean>(true);
 
+  const fixData = comformData(resultData.results);
   useEffect(() => {
-    if (resultData) setResults(comformData(resultData.results));
-  }, [resultData]);
-
-  console.log(results);
+    setResults(fixData);
+    console.log("State is: ", results);
+  }, []);
 
   function onClickHandler() {
     setSortAscending((prevSortAscending) => !prevSortAscending); // Toggle sortAscending
@@ -50,48 +46,40 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
         : b.mainTitle.toLowerCase().localeCompare(a.mainTitle.toLowerCase())
     );
   }
-  // bellow part needs fixing
-  return resultData != null ? (
-    <section
-      className={
-        "results-loaded results-wrap contentwidth guttercontentwidthhalf pt-2 pb-2 border-radius-1 " +
-        classes
-      }
-    >
-      <header className="results-header">
-        {/* <ResultsNumber resultNum={results.length} /> */}
-        <div className="results-sortBy-wrap">
-          <span className="heading-md bold">Sort by:</span>
-          <Buttons
-            parentClickFn={() => onClickHandler()}
-            classes="ml-2 pl-1 pr-1"
-            btnVersion="secondary"
-            btnType="button"
-            hideText={true}
-            defaultState={0}
-            states={[
-              { Icon: SortDown, text: "Sort alphabeticaly ascending" },
-              { Icon: SortUp, text: "Sort alphbeticaly descending" },
-            ]}
-          />
-        </div>
-      </header>
-      <main className="results-area mt-2">
-        <IteratorGrid resultData={sortBy(results, sortAscending)} />
-      </main>
-      <footer className="results-footer">
-        <div className="footer-pagination-wrap">Pagination Here</div>
-      </footer>
-    </section>
-  ) : (
-    <section
-      className={
-        "results-wrap contentwidth guttercontentwidthhalf pt-2 pb-2 border-radius-1 " +
-        classes
-      }
-    >
-      No results
-    </section>
+  return (
+    results.length > 0 && (
+      <section
+        className={
+          "results-loaded results-wrap contentwidth guttercontentwidthhalf pt-2 pb-2 border-radius-1 " +
+          classes
+        }
+      >
+        <header className="results-header">
+          <ResultsNumber resultNum={resultData.count} />
+          <div className="results-sortBy-wrap">
+            <span className="heading-md bold">Sort by:</span>
+            <Buttons
+              parentClickFn={() => onClickHandler()}
+              classes="ml-2 pl-1 pr-1"
+              btnVersion="secondary"
+              btnType="button"
+              hideText={true}
+              defaultState={0}
+              states={[
+                { Icon: SortDown, text: "Sort alphabeticaly ascending" },
+                { Icon: SortUp, text: "Sort alphbeticaly descending" },
+              ]}
+            />
+          </div>
+        </header>
+        <main className="results-area mt-2">
+          <IteratorGrid resultData={sortBy(results, sortAscending)} />
+        </main>
+        <footer className="results-footer">
+          <div className="footer-pagination-wrap">Pagination Here</div>
+        </footer>
+      </section>
+    )
   );
 };
 
