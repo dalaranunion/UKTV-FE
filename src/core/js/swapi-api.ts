@@ -1,46 +1,78 @@
 type Result = string[];
 
-const fetchData = async (searchTerm: string): Promise<Result[]> => {
+interface SwapiSchema {
+  count: number | null;
+  next: string | null;
+  previous: string | null;
+  results: string[] | null;
+}
+
+// Main API URL
+const baseUrl = "https://swapi.dev/api/";
+
+// Categories API has available extra "category" is used when searching vehicles/people/etc
+const searchCategories: string[] = [
+  "starships",
+  "films",
+  "vehicles",
+  "people",
+  "planets",
+  "species",
+];
+
+function validSearch(input: string) {
+  return searchCategories.includes(input);
+}
+
+const fetchData = async (
+  searchString: string,
+  searchType: string
+): Promise<SwapiSchema[]> => {
   // Lowercase any input to avoid casing issues
-  searchTerm = searchTerm.toLocaleLowerCase();
+  searchString = searchString.toLocaleLowerCase().trim();
+  searchType = searchType.toLocaleLowerCase();
 
-  // The searchterms which are allowed are the below if they wont match nothing returns
-  const searchTypes = ["starships", "films", "vehicles"];
-  if (!searchTypes.includes(searchTerm)) return [];
+  let endpoint = "";
 
-  const baseUrl = "https://swapi.dev/api/";
-  const endpoint = searchTerm;
+  // Check if this is category people,vehicles,etc and if the requested category exists
+  if (searchType === "category" && validSearch(searchString)) {
+    endpoint = searchString;
+  }
 
-  // Using events to understand when the fetch request starts
-  // Supose the API takes time to reply we show some animation
-  // Once it happens animation plays and the warp effect begins
-  // Added a setTimeout because the data fetching is blazing fast
-  setTimeout(function () {
-    dispatchEvent(
-      new CustomEvent("fetchDataStart", { detail: { searchTerm: searchTerm } })
-    );
-  }, 200);
+  // Check if the searchtype is not a category
+  if (searchType !== "category" && validSearch(searchType)) {
+    endpoint = `${searchType}/?search=${searchString}`;
+  }
 
+  const data = await swapiCaller(`${baseUrl}${endpoint}`);
+
+  // Returns empty data if there is no data
+  return data ? data : [];
+};
+
+const swapiCaller = async (getRequest: string): Promise<SwapiSchema[]> => {
+  const animation = window.myJump;
+  if (!animation) {
+    // check if the animation exists in the Window object
+    console.error("Jump animation does not exist");
+  }
   try {
-    const response = await fetch(`${baseUrl}${endpoint}`);
+    // The request is started make warp animation
+    animation.initiate();
+    const response = await fetch(getRequest);
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
     const data = await response.json();
 
-    const dataResults = data.results as Result[];
-    // Once the data fetch is done then dispatch even with the data
-    // I felt its better to dispatch an event and access the data
-    // as it is more Reactive. Added some timeout here too.
+    // Once the data is fetched then complete the animation
     setTimeout(function () {
-      dispatchEvent(
-        new CustomEvent("fetchDataDone", {
-          detail: { searchTerm: searchTerm, data: dataResults },
-        })
-      );
+      animation.enter();
     }, 2000);
 
-    return dataResults;
+    console.log(data);
+
+    return data as SwapiSchema[];
   } catch (error) {
     // Ideally errors should display under the searchform.
     console.error("Error:", error);
@@ -48,4 +80,6 @@ const fetchData = async (searchTerm: string): Promise<Result[]> => {
   }
 };
 
-export default fetchData;
+export { fetchData, searchCategories };
+
+export default swapiCaller;

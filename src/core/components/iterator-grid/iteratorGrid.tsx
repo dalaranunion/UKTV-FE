@@ -16,7 +16,7 @@ function ResultsGrid({ resultData }: ResultsGridProps) {
   // If there are no results return nothing
   if (!resultData) return;
 
-  return (
+  return resultData.length ? (
     <div className="results-grid pt-2 pb-2 pr-2 pl-2">
       {resultData.map((item, iteration) => (
         <Card
@@ -27,6 +27,8 @@ function ResultsGrid({ resultData }: ResultsGridProps) {
         />
       ))}
     </div>
+  ) : (
+    <div className="results-message"> No reults passed </div>
   );
 }
 export default ResultsGrid;
