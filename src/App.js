@@ -16,64 +16,44 @@ import "./core/js/space-animation.js";
 import { fetchData, emptyObject, searchCategories } from "./core/js/swapi-api.ts";
 
 function App() {
-  const [searchState, setSearchState] = useState({
-    formData: null,
-    results: null,
-    isLoading: false,
-    error: null,
-  });
+  const [searchString, setSearchString] = useState("");
+  const [searchType, setSearchType] = useState("category");
+  const [results, setResults] = useState(emptyObject);
 
-  console.log("before fn: ", searchState);
-  async function submitFormRequest() {
-    console.log("before run: ", searchState);
-    setSearchState({
-      ...searchState,
-      isLoading: true,
-    });
-    const data = await fetchData(
-      searchState.formData.get("searchString"),
-      searchState.formData.get("searchType")
-    );
-    setSearchState({
-      ...searchState,
-      results: data,
-      isLoading: false,
-    });
-    console.log("after run fn: ", searchState);
-  }
-
-  // useEffect(() => {
-  //   // The animations are done by adding/remove classes in the <body> element
-  //   if (previousSearchString) {
-  //     document.body.classList.add("search-active");
-  //   } else document.body.classList.remove("search-active");
-  // }, [isLoading, pulledData, previousSearchString]);
-
-  // This is the searchform component
+  // This is the searchform componen
   function SearchForm() {
-    function onSubmitHandler(event) {
+    async function onSubmitHandler(event) {
       event.preventDefault();
-      console.log(event);
-      setSearchState({
-        ...searchState,
-        formData: new FormData(event.target),
-      });
-      console.log("submitted: ", searchState);
-      submitFormRequest();
+      const formData = new FormData(event.target);
+      // Set the search terms in the state, then useEffect will take over
+      setSearchString(formData.get("searchString"));
+      setSearchType(formData.get("searchType"));
+
+      try {
+        // Perform search using searchString and searchType
+        const data = await fetchData(
+          formData.get("searchString"),
+          formData.get("searchType")
+        );
+        setResults(data);
+      } catch (error) {
+        console.log(error);
+      }
+      // The animations are done by adding/remove classes in the <body> element
+      if (formData.get("searchString")) {
+        document.body.classList.add("search-active");
+      } else document.body.classList.remove("search-active");
     }
 
     return (
-      <form
-        className="searchbox-form pt-2 pr-2 pl-2 pb-2"
-        onSubmit={onSubmitHandler}
-      >
+      <form className="searchbox-form pt-2 pr-2 pl-2 pb-2" onSubmit={onSubmitHandler}>
         <input
           required={true}
           className="searchbox-input"
           name="searchString"
           minLength="2"
           type="text"
-          // defaultValue={formData ? formData.get("searchString") : ""}
+          defaultValue={searchString}
           placeholder="Find Vehicles, Films, or Spacecrafts..."
         ></input>
         <select className="searchbox-select" name="searchType" required={true}>
@@ -110,7 +90,7 @@ function App() {
           </h2>
           <SearchForm />
         </div>
-        {/* <ResultsComponent resultData={pulledData} /> */}
+        <ResultsComponent resultData={results} />
       </main>
     </div>
   );
