@@ -5,7 +5,7 @@ interface SwapiSchema {
   results: string[] | null;
 }
 
-const emptyObject = { count: 0, next: null, previous: null, results: [] };
+const emptyObject:SwapiSchema = { count: 0, next: null, previous: null, results: [] };
 // Main API URL
 const baseUrl = "https://swapi.dev/api/";
 
@@ -78,6 +78,6 @@ const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
   }
 };
 
-export { fetchData, emptyObject, searchCategories };
+export { fetchData, SwapiSchema, emptyObject, searchCategories };
 
 export default swapiCaller;

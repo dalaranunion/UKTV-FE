@@ -12,27 +12,22 @@ import { ReactComponent as SortUp } from "../../../media/svg/sort-up-icon.svg";
 // Import CSS
 import "./resultsComponent.css";
 
-// Import Javascript functions
+// Import Javascript modules
 import { comformData } from "../../js/dataComformer.ts";
+import { SwapiSchema } from "../../js/swapi-api.ts";
 
-interface SwapiSchema {
-  count: number | null;
-  next: string | null;
-  previous: string | null;
-  results: string[] | null;
-}
 interface ResultsComponentProps {
   resultData: SwapiSchema;
   classes?: string;
 }
 
 const ResultsComponent: React.FC<ResultsComponentProps> = ({ classes, resultData }) => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<string[]>([]);
   const [sortAscending, setSortAscending] = useState<boolean>(true);
 
-  const fixData = comformData(resultData.results);
+ const comformedData = comformData(resultData.results);
   useEffect(() => {
-    setResults(fixData);
+    setResults(comformedData);
     console.log("State is: ", results);
   }, []);
 
@@ -47,7 +42,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ classes, resultData
     );
   }
   return (
-    results.length > 0 && (
+    comformedData.length > 0 && (
       <section
         className={
           "results-loaded results-wrap contentwidth guttercontentwidthhalf pt-2 pb-2 border-radius-1 " +
@@ -73,7 +68,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({ classes, resultData
           </div>
         </header>
         <main className="results-area mt-2">
-          <IteratorGrid resultData={sortBy(results, sortAscending)} />
+          <IteratorGrid resultData={sortBy((results.length) ? results : comformedData, sortAscending)} />
         </main>
         <footer className="results-footer">
           <div className="footer-pagination-wrap">Pagination Here</div>
