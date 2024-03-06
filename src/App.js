@@ -46,7 +46,10 @@ function App() {
     }
 
     return (
-      <form className="searchbox-form pt-2 pr-2 pl-2 pb-2" onSubmit={onSubmitHandler}>
+      <form
+        className="searchbox-form pt-2 pr-2 pl-2 pb-2"
+        onSubmit={onSubmitHandler}
+      >
         <input
           required={true}
           className="searchbox-input"
@@ -84,7 +87,7 @@ function App() {
         <h1 className="mt-1 heading-xl heading-font"> API search</h1>
       </header>
       <main>
-        <div className="search-wrap contentwidthhalf">
+        <div className="search-wrap contentwidthnarrow">
           <h2 className="heading-sm medium search-title mb-3">
             May the "response: 200 OK" be with you
           </h2>
