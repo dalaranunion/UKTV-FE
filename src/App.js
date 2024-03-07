@@ -1,5 +1,5 @@
 import { ReactComponent as Logo } from "./media/svg/logo.svg";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 // Import SVG icons
@@ -8,17 +8,27 @@ import { ReactComponent as SearchIcon } from "./media/svg/search-icon.svg";
 // Import Components
 import Buttons from "./core/components/buttons/buttons.tsx";
 import ResultsComponent from "./core/components/results-component/resultsComponent.tsx";
+import ErrorCard from "./core/components/errorMessage/errorMessage.tsx";
 
 // Import JS files
 import "./core/js/space-animation.js";
 
 // This is used to fetch the data
-import { fetchData, emptyObject, searchCategories } from "./core/js/swapi-api.ts";
+import {
+  swapiCaller,
+  fetchData,
+  emptyObject,
+  searchCategories,
+} from "./core/js/swapi-api.ts";
 
 function App() {
+  const backupAPI =
+    "https://gist.githubusercontent.com/dotspencer/10f9e59cbccfd7b12b9a663a56c41f92/raw/23b07f651ca2d09f37260c71ad30a925057bc4e5/people-page-1.json";
+
   const [searchString, setSearchString] = useState("");
   const [searchType, setSearchType] = useState("category");
-  const [results, setResults] = useState(emptyObject);
+  const [apiResults, setApiResults] = useState(emptyObject);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // This is the searchform componen
   function SearchForm() {
@@ -35,9 +45,13 @@ function App() {
           formData.get("searchString"),
           formData.get("searchType")
         );
-        setResults(data);
+        setApiResults(data);
       } catch (error) {
-        console.log(error);
+        console.log("Errors");
+        setErrorMessage(error);
+        console.log("Using fallback data");
+        const data = await swapiCaller(backupAPI);
+        setApiResults(data);
       }
       // The animations are done by adding/remove classes in the <body> element
       if (formData.get("searchString")) {
@@ -93,8 +107,17 @@ function App() {
           </h2>
           <SearchForm />
         </div>
-        <ResultsComponent resultData={results} />
+
+        {apiResults.count ? (
+          <ResultsComponent resetState={true} resultData={apiResults} />
+        ) : null}
       </main>
+      <ErrorCard
+        parrentFn={() => {
+          setErrorMessage("");
+        }}
+        error={errorMessage.toString()}
+      />
     </div>
   );
 }

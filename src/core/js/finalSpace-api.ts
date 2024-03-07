@@ -1,29 +1,21 @@
-interface SwapiSchema {
+interface FinalSpaceSchema {
   count: number | 0;
   next: string | null;
   previous: string | null;
   results: string[] | [];
 }
 
-const emptyObject: SwapiSchema = {
+const emptyObject: FinalSpaceSchema = {
   count: 0,
   next: null,
   previous: null,
   results: [],
 };
 // Main API URL
-// const baseUrl = "https://swapi.dev/api/";
-const baseUrl = "https://swapi-node.now.sh/api/";
+const baseUrl = "https://finalspaceapi.com/api/v0/";
 
 // Categories API has available extra "category" is used when searching vehicles/people/etc
-const searchCategories: string[] = [
-  "starships",
-  "films",
-  "vehicles",
-  "people",
-  "planets",
-  "species",
-];
+const searchCategories: string[] = ["character", "episode", "location", "quote"];
 
 function validSearch(input: string) {
   return searchCategories.includes(input);
@@ -32,7 +24,7 @@ function validSearch(input: string) {
 const fetchData = async (
   searchString: string,
   searchType: string
-): Promise<SwapiSchema> => {
+): Promise<FinalSpaceSchema> => {
   // Lowercase any input to avoid casing issues
   searchString = searchString.toLocaleLowerCase().trim();
   searchType = searchType.toLocaleLowerCase();
@@ -50,17 +42,13 @@ const fetchData = async (
   }
 
   if (!endpoint) return emptyObject;
-  try {
-    const data = await swapiCaller(`${baseUrl}${endpoint}`);
-    return data ? data : emptyObject;
-  } catch (error) {
-    throw Error(error);
-  }
+  const data = await swapiCaller(`${baseUrl}${endpoint}`);
 
   // Returns empty data if there is no data
+  return data ? data : emptyObject;
 };
 
-const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
+const swapiCaller = async (getRequest: string): Promise<FinalSpaceSchema> => {
   const animation = window.myJump;
   if (!animation) {
     // check if the animation exists in the Window object
@@ -71,7 +59,7 @@ const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
     animation.initiate();
     const response = await fetch(getRequest);
     if (!response.ok) {
-      throw Error(`Error fetching data: ${response.statusText}`);
+      throw new Error(`Error fetching data: ${response.statusText}`);
     }
     const data = await response.json();
 
@@ -80,15 +68,14 @@ const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
       animation.enter();
     }, 2000);
 
-    return data as SwapiSchema;
+    return data as FinalSpaceSchema;
   } catch (error) {
-    setTimeout(function () {
-      animation.enter();
-    }, 2000);
-    throw Error(error);
+    // Ideally errors should display under the searchform.
+    console.error("Error:", error);
+    throw new Error("Failed to fetch data.");
   }
 };
 
-export { fetchData, swapiCaller, SwapiSchema, emptyObject, searchCategories };
+export { fetchData, swapiCaller, FinalSpaceSchema, emptyObject, searchCategories };
 
 export default fetchData;

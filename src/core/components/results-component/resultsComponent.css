@@ -32,3 +32,6 @@
   visibility: visible;
   max-height: inherit;
 }
+.no-results {
+  text-align: center;
+}

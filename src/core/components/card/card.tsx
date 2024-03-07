@@ -23,17 +23,24 @@ interface ContentArray {
 interface CardProps {
   classes?: string;
   mainTitle: string;
-  secondaryTitle: string;
+  secondaryTitle: string | null;
   content: ContentArray[];
 }
 
-const Card: React.FC<CardProps> = ({ classes, mainTitle, secondaryTitle, content }) => {
+const Card: React.FC<CardProps> = ({
+  classes,
+  mainTitle,
+  secondaryTitle,
+  content,
+}) => {
   if (!classes) classes = "";
   return (
     <article className={`card-ctr border-radius-5 ${classes}`}>
       <header className="card-header">
         <h2 className="card-main-title bold heading-lg mb-2">{mainTitle}</h2>
-        <h4 className="card-secondary-title bold heading-xsm">{secondaryTitle}</h4>
+        {secondaryTitle ? (
+          <h4 className="card-secondary-title bold heading-xsm">{secondaryTitle}</h4>
+        ) : null}
         <div className="card-badge pt-5 pb-5 pl-5 pr-5">
           <div className="card-icon-ctr">
             <Robot />
