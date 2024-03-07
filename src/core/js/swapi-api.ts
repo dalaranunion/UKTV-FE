@@ -12,8 +12,8 @@ const emptyObject: SwapiSchema = {
   results: [],
 };
 // Main API URL
-// const baseUrl = "https://swapi.dev/api/";
-const baseUrl = "https://swapi-node.now.sh/api/";
+// const baseUrl = "https://swapi.dev";
+export const baseUrl = "https://swapi-node.now.sh";
 
 // Categories API has available extra "category" is used when searching vehicles/people/etc
 const searchCategories: string[] = [
@@ -41,12 +41,12 @@ const fetchData = async (
 
   // Check if this is category people,vehicles,etc and if the requested category exists
   if (searchType === "category" && validSearch(searchString)) {
-    endpoint = searchString;
+    endpoint = `/api/${searchString}`;
   }
 
   // Check if the searchtype is not a category
   if (searchType !== "category" && validSearch(searchType)) {
-    endpoint = `${searchType}/?search=${searchString}`;
+    endpoint = `/api/${searchType}/?search=${searchString}`;
   }
 
   if (!endpoint) return emptyObject;
@@ -79,6 +79,15 @@ const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
     setTimeout(function () {
       animation.enter();
     }, 2000);
+
+    // THIS TO FIX THE RETURNED DATA
+    const newData = data.results.map((a, iteration) => {
+      const fields = a.fields;
+      delete a.fields;
+      return fields;
+    });
+    data.results = newData;
+    // END TEMP FIX
 
     return data as SwapiSchema;
   } catch (error) {

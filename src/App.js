@@ -15,18 +15,13 @@ import "./core/js/space-animation.js";
 
 // This is used to fetch the data
 import {
-  swapiCaller,
   fetchData,
   emptyObject,
   searchCategories,
 } from "./core/js/swapi-api.ts";
 
 function App() {
-  const backupAPI =
-    "https://gist.githubusercontent.com/dotspencer/10f9e59cbccfd7b12b9a663a56c41f92/raw/23b07f651ca2d09f37260c71ad30a925057bc4e5/people-page-1.json";
-
   const [searchString, setSearchString] = useState("");
-  const [searchType, setSearchType] = useState("category");
   const [apiResults, setApiResults] = useState(emptyObject);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -37,7 +32,6 @@ function App() {
       const formData = new FormData(event.target);
       // Set the search terms in the state, then useEffect will take over
       setSearchString(formData.get("searchString"));
-      setSearchType(formData.get("searchType"));
 
       try {
         // Perform search using searchString and searchType
@@ -49,9 +43,6 @@ function App() {
       } catch (error) {
         console.log("Errors");
         setErrorMessage(error);
-        console.log("Using fallback data");
-        const data = await swapiCaller(backupAPI);
-        setApiResults(data);
       }
       // The animations are done by adding/remove classes in the <body> element
       if (formData.get("searchString")) {

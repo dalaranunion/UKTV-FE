@@ -14,7 +14,12 @@ import "./resultsComponent.css";
 
 // Import Javascript modules
 import { comformData } from "../../js/dataComformer.ts";
-import { SwapiSchema, emptyObject, swapiCaller } from "../../js/swapi-api.ts";
+import {
+  baseUrl,
+  SwapiSchema,
+  emptyObject,
+  swapiCaller,
+} from "../../js/swapi-api.ts";
 
 interface ResultsComponentProps {
   resultData: SwapiSchema;
@@ -26,28 +31,19 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
   resultData,
   resetState,
 }) => {
-  console.log("Original data: ", resultData);
   const [results, setResults] = useState<SwapiSchema>(emptyObject);
   const [sortAscending, setSortAscending] = useState<boolean>(true);
-  console.log("re-render: ", results);
+
   const comformedData: any[] = comformData(results.results);
 
   useEffect(() => {
-    console.log("RUN INIT");
-    initFn();
-  }, []);
-
-  function initFn() {
-    console.log("function run");
     setResults(resultData);
-  }
+  }, [resultData]);
 
   const ResultsPagination: React.FC<{
     prevURL: string | null;
     nextURL: string | null;
   }> = ({ prevURL, nextURL }) => {
-    console.log(prevURL, nextURL);
-
     async function onClickHandlerPagination(page: string) {
       try {
         const data = await swapiCaller(page);
@@ -58,10 +54,12 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
     }
     return (
       nextURL && (
-        <div className="footer-pagination-wrap">
+        <div className="footer-pagination-wrap pt-2 pb-2 guttercontentwidth">
           {prevURL ? (
             <Buttons
-              parentClickFn={() => onClickHandlerPagination(prevURL)}
+              parentClickFn={() =>
+                onClickHandlerPagination(`${baseUrl}${prevURL}`)
+              }
               defaultState={0}
               hideText={false}
               btnVersion="secondary"
@@ -71,7 +69,9 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
           ) : null}
           {nextURL ? (
             <Buttons
-              parentClickFn={() => onClickHandlerPagination(nextURL)}
+              parentClickFn={() =>
+                onClickHandlerPagination(`${baseUrl}${nextURL}`)
+              }
               defaultState={0}
               hideText={false}
               btnVersion="secondary"
@@ -83,9 +83,11 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
       )
     );
   };
+
   function onClickHandler() {
     setSortAscending((prevSortAscending) => !prevSortAscending); // Toggle sortAscending
   }
+
   function sortBy(input: ResultsData[], ascending: boolean) {
     return input.sort((a, b) =>
       ascending
@@ -93,10 +95,11 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
         : b.mainTitle.toLowerCase().localeCompare(a.mainTitle.toLowerCase())
     );
   }
+
   return resultData.count > 0 ? (
     <section
       className={
-        "results-loaded results-wrap contentwidth guttercontentwidthhalf pt-2 pb-2 border-radius-1 " +
+        "results-loaded results-wrap contentwidth guttercontentwidthhalf pt-2 pb-2 mb-4 border-radius-1 " +
         classes
       }
     >
@@ -123,7 +126,10 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
       </main>
       <footer className="results-footer">
         {results.next || results.previous ? (
-          <ResultsPagination prevURL={results.previous} nextURL={results.next} />
+          <ResultsPagination
+            prevURL={results.previous}
+            nextURL={results.next}
+          />
         ) : null}
       </footer>
     </section>

@@ -1,11 +1,16 @@
 .results-number-count {
-    border: 3px solid var(--palette-02);
-    display: inline-block;
-    padding: 5px 10px;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+  border: 3px solid var(--palette-02);
+  display: inline-block;
+  padding: 5px 10px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .results-number-wrap {
-    border: 3px solid var(--palette-02);
+  border: 3px solid var(--palette-02);
+}
+.footer-pagination-wrap {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
