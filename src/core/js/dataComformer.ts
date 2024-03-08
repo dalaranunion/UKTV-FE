@@ -1,7 +1,7 @@
 interface ContentPickerType {
   [key: string]: string;
 }
-interface TitlePickerType {
+interface TitlePicker {
   mainTitle: string[];
   secondaryTitle: string[];
 }
@@ -9,15 +9,15 @@ interface ContentType {
   title: string;
   text: string;
 }
-interface ComfortedObjectType {
+interface ComfortedSchema {
   mainTitle: string;
   secondaryTitle: string;
   content: ContentType[];
 }
-type dataInputType = any[] | undefined;
+type dataInput = string[];
 
-export function comformData(dataInput: dataInputType[]) {
-  const titlePickers: TitlePickerType = {
+export function comformData(dataInput: dataInput) {
+  const titlePickers: TitlePicker = {
     mainTitle: ["name", "title"],
     secondaryTitle: ["director", "model"],
   };
@@ -39,9 +39,9 @@ export function comformData(dataInput: dataInputType[]) {
   const newArray: object[] = [];
 
   for (let i = 0; i < dataInput.length; i++) {
-    const item = dataInput[i];
+    const item: any = dataInput[i];
     // Build the shadow object
-    const newObj: ComfortedObjectType = {
+    const newObj: ComfortedSchema = {
       mainTitle: "",
       secondaryTitle: "",
       content: [],
@@ -65,5 +65,5 @@ export function comformData(dataInput: dataInputType[]) {
     }
     newArray.push(newObj);
   }
-  return newArray;
+  return newArray as ComfortedSchema[];
 }

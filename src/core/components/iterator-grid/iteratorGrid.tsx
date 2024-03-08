@@ -9,16 +9,16 @@ interface ResultsData {
   content: any[];
 }
 interface ResultsGridProps {
-  resultData: ResultsData[];
+  data: ResultsData[];
 }
 
-function ResultsGrid({ resultData }: ResultsGridProps) {
+function IteratorGrid({ data }: ResultsGridProps) {
   // If there are no results return nothing
-  if (!resultData) return;
+  if (!data) return;
 
-  return (
+  return data.length ? (
     <div className="results-grid pt-2 pb-2 pr-2 pl-2">
-      {resultData.map((item, iteration) => (
+      {data.map((item, iteration) => (
         <Card
           key={iteration}
           mainTitle={item.mainTitle}
@@ -27,6 +27,11 @@ function ResultsGrid({ resultData }: ResultsGridProps) {
         />
       ))}
     </div>
+  ) : (
+    <div className="results-message"> No reults passed </div>
   );
 }
-export default ResultsGrid;
+
+export { ResultsData, IteratorGrid };
+
+export default IteratorGrid;

@@ -1,4 +1,4 @@
-// Following code bellow is stolen from https://codepen.io/ybensira/pen/byYNBZ
+// Following code bellow is *stolen* from https://codepen.io/ybensira/pen/byYNBZ
 // I did a few modifications to work for my project
 const { TweenMax } = window;
 /**
@@ -6,7 +6,8 @@ const { TweenMax } = window;
  * @param {Int} max
  * @param {Int} min
  */
-const randomInRange = (max, min) => Math.floor(Math.random() * (max - min + 1)) + min;
+const randomInRange = (max, min) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
 const ACTIVE_PROBABILITY = 0;
 const BASE_SIZE = 1;
 const VELOCITY_INC = 1.01;
@@ -155,7 +156,10 @@ class JumpToHyperspace {
       initiating: true,
       initiateTimestamp: new Date().getTime(),
     };
-    TweenMax.to(this.STATE, 0.25, { velocity: VELOCITY_INIT_INC, bgAlpha: 0.3 });
+    TweenMax.to(this.STATE, 0.25, {
+      velocity: VELOCITY_INIT_INC,
+      bgAlpha: 0.3,
+    });
     // When we initiate, stop the XY origin from moving so that we draw
     // longer lines until the jump
     for (const star of this.STATE.stars.filter((s) => s.STATE.active)) {
@@ -190,19 +194,12 @@ class JumpToHyperspace {
     });
   };
   enter = () => {
-    // if (this.STATE.jumping) return;
     const { initiateTimestamp } = this.STATE;
     this.STATE = {
       ...this.STATE,
       initiating: false,
       initiateTimestamp: undefined,
     };
-    // if (new Date().getTime() - initiateTimestamp > 600) {
-    //   this.jump();
-    // } else {
-    //   TweenMax.to(this.STATE, 0.25, { velocity: VELOCITY_INC, bgAlpha: 0 });
-    // }
-
     setTimeout(() => {
       this.STATE = {
         ...this.STATE,
@@ -222,11 +219,11 @@ class JumpToHyperspace {
     // this.canvas.addEventListener("touchstart", this.initiate);
     // this.canvas.addEventListener("mouseup", this.enter);
     // this.canvas.addEventListener("touchend", this.enter);
-    const initiateBinded = this.initiate.bind(this);
-    const enterBinded = this.enter.bind(this);
-
-    window.addEventListener("fetchDataStart", initiateBinded);
-    window.addEventListener("fetchDataDone", enterBinded);
+    // commented this out Events are nasty better use the Class itself
+    // const initiateBinded = this.initiate.bind(this);
+    // const enterBinded = this.enter.bind(this);
+    // window.addEventListener("fetchDataStart", initiateBinded);
+    // window.addEventListener("fetchDataDone", enterBinded);
   };
   setup = () => {
     this.context.lineCap = "round";

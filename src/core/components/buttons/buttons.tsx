@@ -28,7 +28,7 @@ import "./buttons.css";
 
 // States expects an object with icon and text
 interface State {
-  Icon?: React.FC;
+  Icon?: React.FC | undefined;
   text: string;
 }
 
@@ -59,8 +59,10 @@ const Buttons: React.FC<ButtonProps> = ({
 }) => {
   const [currState, SetCurrState] = useState<number>(0);
   if (defaultState) SetCurrState(defaultState);
-  const SvgIcon = states[currState].Icon;
-  let ariaLabel = states[currState].text;
+
+  const stateText = states[currState].text;
+  // State icon has uppercase letter as it is a component
+  const StateIcon = states[currState].Icon;
 
   function goToNextState() {
     if (parentClickFn) parentClickFn();
@@ -73,15 +75,15 @@ const Buttons: React.FC<ButtonProps> = ({
       onClick={goToNextState}
       className={`button-${btnVersion} ${classes}`}
       type={btnType}
-      aria-label={ariaLabel}
+      aria-label={states[currState].text}
     >
-      {states[currState].Icon && (
+      {StateIcon && (
         <div aria-hidden="true" className="buttons-icon-ctr">
-          <SvgIcon />
+          <StateIcon />
         </div>
       )}
-      {states[currState].text && !hideText && (
-        <span className="buttons-text-ctr ml-1 mr-1">{states[currState].text}</span>
+      {stateText && !hideText && (
+        <span className="buttons-text-ctr ml-1 mr-1">{stateText}</span>
       )}
     </button>
   );

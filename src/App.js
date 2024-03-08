@@ -1,5 +1,5 @@
 import { ReactComponent as Logo } from "./media/svg/logo.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 // Import SVG icons
@@ -8,61 +8,72 @@ import { ReactComponent as SearchIcon } from "./media/svg/search-icon.svg";
 // Import Components
 import Buttons from "./core/components/buttons/buttons.tsx";
 import ResultsComponent from "./core/components/results-component/resultsComponent.tsx";
+import ErrorCard from "./core/components/errorMessage/errorMessage.tsx";
 
 // Import JS files
-// This is for the animation
 import "./core/js/space-animation.js";
+
 // This is used to fetch the data
-import fetchData from "./core/js/swapi-api.ts";
+import {
+  fetchData,
+  emptyObject,
+  searchCategories,
+} from "./core/js/swapi-api.ts";
 
 function App() {
-  const [searchActive, setSearchActive] = useState(false);
-  const [resultsLoaded, setResultsLoaded] = useState(false);
-  const [resultData, setResultsData] = useState(null);
+  const [searchString, setSearchString] = useState("");
+  const [apiResults, setApiResults] = useState(emptyObject);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // The animations are done by adding/remove classes in the <body> element
-  if (searchActive) {
-    document.body.classList.add("search-active");
-  } else document.body.classList.remove("search-active");
-  if (resultsLoaded) {
-    document.body.classList.add("results-loaded");
-  } else document.body.classList.remove("results-loaded");
-
-  function fetchDataStartHandler(event) {
-    // Once fetching the data starts then hide the logo and begin animation
-    setSearchActive(true);
-    if (resultsLoaded) setResultsLoaded(false);
-  }
-  function fetchDataDoneHandler(event) {
-    // Once fetching is complete then finish animation and load results
-    setResultsData(event.detail.data);
-    setResultsLoaded(true);
-  }
-
-  window.addEventListener("fetchDataStart", fetchDataStartHandler);
-  window.addEventListener("fetchDataDone", fetchDataDoneHandler);
-
-  // This is the searchform component
+  // This is the searchform componen
   function SearchForm() {
-    function onSubmitHandler(event) {
+    async function onSubmitHandler(event) {
       event.preventDefault();
       const formData = new FormData(event.target);
-      const data = fetchData(formData.get("searchtext"));
-      // This was meant to be a message to the user to give specific search terms
-      // But was out of time
-      if (!data.length)
-        console.log("Wrong search terms, search starships or films or vehicles");
+      // Set the search terms in the state, then useEffect will take over
+      setSearchString(formData.get("searchString"));
+
+      try {
+        // Perform search using searchString and searchType
+        const data = await fetchData(
+          formData.get("searchString"),
+          formData.get("searchType")
+        );
+        setApiResults(data);
+      } catch (error) {
+        console.log("Errors");
+        setErrorMessage(error);
+      }
+      // The animations are done by adding/remove classes in the <body> element
+      if (formData.get("searchString")) {
+        document.body.classList.add("search-active");
+      } else document.body.classList.remove("search-active");
     }
+
     return (
-      <form className="searchbox-form pt-2 pr-2 pl-2 pb-2" onSubmit={onSubmitHandler}>
+      <form
+        className="searchbox-form pt-2 pr-2 pl-2 pb-2"
+        onSubmit={onSubmitHandler}
+      >
         <input
           required={true}
           className="searchbox-input"
-          name="searchtext"
+          name="searchString"
           minLength="2"
           type="text"
+          defaultValue={searchString}
           placeholder="Find Vehicles, Films, or Spacecrafts..."
         ></input>
+        <select className="searchbox-select" name="searchType" required={true}>
+          <option defaultValue={true} value="category">
+            Category
+          </option>
+          {searchCategories.map((cat, iteration) => (
+            <option key={iteration} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
         <Buttons
           classes="ml-2 searchbox-btn"
           btnVersion="main"
@@ -73,6 +84,7 @@ function App() {
       </form>
     );
   }
+
   return (
     <div id="star-wars-app">
       <header id="page-header" className="guttercontentwidth contentwidth">
@@ -80,14 +92,23 @@ function App() {
         <h1 className="mt-1 heading-xl heading-font"> API search</h1>
       </header>
       <main>
-        <div className="search-wrap contentwidthhalf">
+        <div className="search-wrap contentwidthnarrow">
           <h2 className="heading-sm medium search-title mb-3">
             May the "response: 200 OK" be with you
           </h2>
           <SearchForm />
         </div>
-        <ResultsComponent resultData={resultData} />
+
+        {apiResults.count ? (
+          <ResultsComponent resetState={true} resultData={apiResults} />
+        ) : null}
       </main>
+      <ErrorCard
+        parrentFn={() => {
+          setErrorMessage("");
+        }}
+        error={errorMessage.toString()}
+      />
     </div>
   );
 }
