@@ -14,12 +14,7 @@ import "./resultsComponent.css";
 
 // Import Javascript modules
 import { comformData } from "../../js/dataComformer.ts";
-import {
-  baseUrl,
-  SwapiSchema,
-  emptyObject,
-  swapiCaller,
-} from "../../js/swapi-api.ts";
+import { baseUrl, SwapiSchema, emptyObject, swapiCaller } from "../../js/swapi-api.ts";
 
 interface ResultsComponentProps {
   resultData: SwapiSchema;
@@ -57,9 +52,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
         <div className="footer-pagination-wrap pt-2 pb-2 guttercontentwidth">
           {prevURL ? (
             <Buttons
-              parentClickFn={() =>
-                onClickHandlerPagination(`${baseUrl}${prevURL}`)
-              }
+              parentClickFn={() => onClickHandlerPagination(`${baseUrl}${prevURL}`)}
               defaultState={0}
               hideText={false}
               btnVersion="secondary"
@@ -69,9 +62,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
           ) : null}
           {nextURL ? (
             <Buttons
-              parentClickFn={() =>
-                onClickHandlerPagination(`${baseUrl}${nextURL}`)
-              }
+              parentClickFn={() => onClickHandlerPagination(`${baseUrl}${nextURL}`)}
               defaultState={0}
               hideText={false}
               btnVersion="secondary"
@@ -121,15 +112,12 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
           />
         </div>
       </header>
-      <main className="results-area mt-2">
+      <div className="results-area mt-2">
         <IteratorGrid data={sortBy(comformedData, sortAscending)} />
-      </main>
+      </div>
       <footer className="results-footer">
         {results.next || results.previous ? (
-          <ResultsPagination
-            prevURL={results.previous}
-            nextURL={results.next}
-          />
+          <ResultsPagination prevURL={results.previous} nextURL={results.next} />
         ) : null}
       </footer>
     </section>

@@ -14,11 +14,7 @@ import ErrorCard from "./core/components/errorMessage/errorMessage.tsx";
 import "./core/js/space-animation.js";
 
 // This is used to fetch the data
-import {
-  fetchData,
-  emptyObject,
-  searchCategories,
-} from "./core/js/swapi-api.ts";
+import { fetchData, emptyObject, searchCategories } from "./core/js/swapi-api.ts";
 
 function App() {
   const [searchString, setSearchString] = useState("");
@@ -51,10 +47,7 @@ function App() {
     }
 
     return (
-      <form
-        className="searchbox-form pt-2 pr-2 pl-2 pb-2"
-        onSubmit={onSubmitHandler}
-      >
+      <form className="searchbox-form pt-2 pr-2 pl-2 pb-2" onSubmit={onSubmitHandler}>
         <input
           required={true}
           className="searchbox-input"
