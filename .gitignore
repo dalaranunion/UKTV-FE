@@ -1,5 +1,8 @@
 # Mac finder
+.DS_Store
 .DS_store
+.ds_store
+
 
 # Logs
 logs
