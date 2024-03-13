@@ -18,8 +18,8 @@ type dataInput = string[];
 
 export function comformData(dataInput: dataInput) {
   const titlePickers: TitlePicker = {
-    mainTitle: ["name", "title"],
-    secondaryTitle: ["director", "model"],
+    mainTitle: ["name", "title", "starship_class"],
+    secondaryTitle: ["director", "model", "classification"],
   };
   const contentPicker: ContentPickerType = {
     manufacturer: "Manufacturer",
@@ -32,6 +32,15 @@ export function comformData(dataInput: dataInput) {
     producer: "Producer",
     release_date: "Release Date",
     opening_crawl: "Opening Crawl",
+    MGLT: "MGLT",
+    hyperdrive_rating: "Hyperdrive rating",
+    designation: "Designation",
+    language: "Language",
+    average_height: "Average height",
+    eye_colors: "Eye colour",
+    skin_colors: "Skin colour",
+    hair_colors: "blonde, brown, black, red",
+    average_lifespan: "Average lifespan",
   };
   const contentKeys: string[] = Object.keys(contentPicker);
 

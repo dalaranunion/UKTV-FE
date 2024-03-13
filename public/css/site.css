@@ -512,7 +512,7 @@ select {
   background-repeat: no-repeat;
   background-position: calc(100% - 1.125em) center;
   color: var(--palette-03);
-  padding-right: 2rem;
+  padding-right: 3rem;
 }
 
 /* right-to-left / left-to-right layout changes */

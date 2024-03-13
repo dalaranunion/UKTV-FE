@@ -1,14 +1,14 @@
 .buttons-icon-ctr {
-    height: 1.125em;
-    width: auto;
-    vertical-align: middle;
+  height: 1.25em;
+  width: auto;
+  vertical-align: middle;
 }
 
 .buttons-text-ctr {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .buttons-text-ctr,
 .buttons-icon-ctr {
-    display: inline-block;
+  display: inline-block;
 }

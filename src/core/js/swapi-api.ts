@@ -30,22 +30,23 @@ function validSearch(input: string) {
 }
 
 const fetchData = async (
-  searchString: string,
+  searchString: string | null,
   searchType: string
 ): Promise<SwapiSchema> => {
   // Lowercase any input to avoid casing issues
-  searchString = searchString.toLocaleLowerCase().trim();
+
+  if (searchString) searchString = searchString.toLocaleLowerCase().trim();
   searchType = searchType.toLocaleLowerCase();
 
   let endpoint = "";
 
   // Check if this is category people,vehicles,etc and if the requested category exists
-  if (searchType === "category" && validSearch(searchString)) {
-    endpoint = `/api/${searchString}`;
+  if (validSearch(searchType)) {
+    endpoint = `/api/${searchType}`;
   }
 
   // Check if the searchtype is not a category
-  if (searchType !== "category" && validSearch(searchType)) {
+  if (searchString && validSearch(searchType)) {
     endpoint = `/api/${searchType}/?search=${searchString}`;
   }
 

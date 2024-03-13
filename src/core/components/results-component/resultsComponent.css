@@ -28,10 +28,13 @@
 .results-loaded .results-wrap,
 .results-loaded.results-wrap {
   opacity: 1;
-  overflow: hidden;
+  overflow: visible;
   visibility: visible;
   max-height: inherit;
 }
 .no-results {
   text-align: center;
+}
+.results-footer {
+  position: sticky;
 }

@@ -14,7 +14,12 @@ import "./resultsComponent.css";
 
 // Import Javascript modules
 import { comformData } from "../../js/dataComformer.ts";
-import { baseUrl, SwapiSchema, emptyObject, swapiCaller } from "../../js/swapi-api.ts";
+import {
+  baseUrl,
+  SwapiSchema,
+  emptyObject,
+  swapiCaller,
+} from "../../js/swapi-api.ts";
 
 interface ResultsComponentProps {
   resultData: SwapiSchema;
@@ -43,35 +48,45 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
       try {
         const data = await swapiCaller(page);
         setResults(data);
+        const scrollPos = parseInt(
+          document.querySelector(".results-wrap").offsetTop - 20
+        );
+        console.log(scrollPos);
+        window.scrollTo({
+          top: scrollPos,
+          behavior: "smooth",
+        });
       } catch (error) {
         throw Error(error);
       }
     }
     return (
-      nextURL && (
-        <div className="footer-pagination-wrap pt-2 pb-2 guttercontentwidth">
-          {prevURL ? (
-            <Buttons
-              parentClickFn={() => onClickHandlerPagination(`${baseUrl}${prevURL}`)}
-              defaultState={0}
-              hideText={false}
-              btnVersion="secondary"
-              btnType="button"
-              states={[{ text: "Previous" }]}
-            />
-          ) : null}
-          {nextURL ? (
-            <Buttons
-              parentClickFn={() => onClickHandlerPagination(`${baseUrl}${nextURL}`)}
-              defaultState={0}
-              hideText={false}
-              btnVersion="secondary"
-              btnType="button"
-              states={[{ text: "Next" }]}
-            />
-          ) : null}
-        </div>
-      )
+      <div className="footer-pagination-wrap pt-2 pb-2 guttercontentwidth">
+        {prevURL ? (
+          <Buttons
+            parentClickFn={() => {
+              onClickHandlerPagination(`${baseUrl}${prevURL}`);
+            }}
+            defaultState={0}
+            hideText={false}
+            btnVersion="secondary"
+            btnType="button"
+            states={[{ text: "Previous" }]}
+          />
+        ) : null}
+        {nextURL ? (
+          <Buttons
+            parentClickFn={() =>
+              onClickHandlerPagination(`${baseUrl}${nextURL}`)
+            }
+            defaultState={0}
+            hideText={false}
+            btnVersion="secondary"
+            btnType="button"
+            states={[{ text: "Next" }]}
+          />
+        ) : null}
+      </div>
     );
   };
 
@@ -116,8 +131,11 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
         <IteratorGrid data={sortBy(comformedData, sortAscending)} />
       </div>
       <footer className="results-footer">
-        {results.next || results.previous ? (
-          <ResultsPagination prevURL={results.previous} nextURL={results.next} />
+        {results.previous || results.next ? (
+          <ResultsPagination
+            prevURL={results.previous}
+            nextURL={results.next}
+          />
         ) : null}
       </footer>
     </section>
