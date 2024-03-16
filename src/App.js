@@ -15,11 +15,7 @@ import ErrorCard from "./core/components/errorMessage/errorMessage.tsx";
 import "./core/js/space-animation.js";
 
 // This is used to fetch the data
-import {
-  fetchData,
-  emptyObject,
-  searchCategories,
-} from "./core/js/swapi-api.ts";
+import { fetchData, emptyObject, searchCategories } from "./core/js/swapi-api.ts";
 
 function App() {
   const [searchString, setSearchString] = useState("");

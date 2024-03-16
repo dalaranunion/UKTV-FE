@@ -27,16 +27,21 @@ interface CardProps {
   content: ContentArray[];
 }
 
-const Card: React.FC<CardProps> = ({ classes, mainTitle, secondaryTitle, content }) => {
+const Card: React.FC<CardProps> = ({
+  classes,
+  mainTitle,
+  secondaryTitle,
+  content,
+}) => {
   if (!classes) classes = "";
   return (
-    <article className={`card-ctr border-radius-5 ${classes}`}>
+    <article className={`card-ctr border-radius-3 ${classes}`}>
       <header className="card-header">
         <h2 className="card-main-title bold heading-lg mb-2">{mainTitle}</h2>
         {secondaryTitle ? (
           <h4 className="card-secondary-title bold heading-xsm">{secondaryTitle}</h4>
         ) : null}
-        <div className="card-badge pt-5 pb-5 pl-5 pr-5">
+        <div className="card-badge pt-3 pb-3 pl-3 pr-3">
           <div className="card-icon-ctr">
             <Robot />
           </div>
@@ -46,8 +51,8 @@ const Card: React.FC<CardProps> = ({ classes, mainTitle, secondaryTitle, content
         <ul className="card-content-list">
           {content.map((item, iteration) => (
             <li key={iteration} className="card-content-list-item">
-              <span className="ccl-item-title pt-2 pb-2">{item.title}</span>
-              <span className="ccl-item-content pt-2 pb-2">{item.text}</span>
+              <span className="ccl-item-title pt-1 pb-1">{item.title}</span>
+              <span className="ccl-item-content pt-1 pb-1">{item.text}</span>
             </li>
           ))}
         </ul>

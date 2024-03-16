@@ -1,19 +1,19 @@
-interface SwapiSchema {
+interface ApiResponseSchema {
   count: number | 0;
   next: string | null;
   previous: string | null;
   results: string[] | [];
 }
 
-const emptyObject: SwapiSchema = {
+const emptyObject: ApiResponseSchema = {
   count: 0,
   next: null,
   previous: null,
   results: [],
 };
 // Main API URL
-// const baseUrl = "https://swapi.dev";
-export const baseUrl = "https://swapi-node.now.sh";
+export const baseUrl = "https://swapi.dev";
+// export const baseUrl = "https://swapi-node.now.sh";
 
 // Categories API has available extra "category" is used when searching vehicles/people/etc
 const searchCategories: string[] = [
@@ -32,7 +32,7 @@ function validSearch(input: string) {
 const fetchData = async (
   searchString: string | null,
   searchType: string
-): Promise<SwapiSchema> => {
+): Promise<ApiResponseSchema> => {
   // Lowercase any input to avoid casing issues
 
   if (searchString) searchString = searchString.toLocaleLowerCase().trim();
@@ -61,7 +61,7 @@ const fetchData = async (
   // Returns empty data if there is no data
 };
 
-const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
+const swapiCaller = async (getRequest: string): Promise<ApiResponseSchema> => {
   const animation = window.myJump;
   if (!animation) {
     // check if the animation exists in the Window object
@@ -82,15 +82,15 @@ const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
     }, 2000);
 
     // THIS TO FIX THE RETURNED DATA
-    const newData = data.results.map((a, iteration) => {
-      const fields = a.fields;
-      delete a.fields;
-      return fields;
-    });
-    data.results = newData;
+    // const newData = data.results.map((a, iteration) => {
+    //   const fields = a.fields;
+    //   delete a.fields;
+    //   return fields;
+    // });
+    // data.results = newData;
     // END TEMP FIX
 
-    return data as SwapiSchema;
+    return data as ApiResponseSchema;
   } catch (error) {
     setTimeout(function () {
       animation.enter();
@@ -99,6 +99,6 @@ const swapiCaller = async (getRequest: string): Promise<SwapiSchema> => {
   }
 };
 
-export { fetchData, swapiCaller, SwapiSchema, emptyObject, searchCategories };
+export { fetchData, swapiCaller, ApiResponseSchema, emptyObject, searchCategories };
 
 export default fetchData;

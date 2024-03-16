@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // Import Components
 import Buttons from "../buttons/buttons.tsx";
@@ -16,22 +16,22 @@ import "./resultsComponent.css";
 import { comformData } from "../../js/dataComformer.ts";
 import {
   baseUrl,
-  SwapiSchema,
+  ApiResponseSchema,
   emptyObject,
   swapiCaller,
 } from "../../js/swapi-api.ts";
 
 interface ResultsComponentProps {
-  resultData: SwapiSchema;
+  resultData: ApiResponseSchema;
   classes?: string | "";
   resetState: boolean | null;
 }
 const ResultsComponent: React.FC<ResultsComponentProps> = ({
   classes,
   resultData,
-  resetState,
 }) => {
-  const [results, setResults] = useState<SwapiSchema>(emptyObject);
+  const resultsCompRef = useRef(null);
+  const [results, setResults] = useState<ApiResponseSchema>(emptyObject);
   const [sortAscending, setSortAscending] = useState<boolean>(true);
 
   const comformedData: any[] = comformData(results.results);
@@ -48,12 +48,8 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
       try {
         const data = await swapiCaller(page);
         setResults(data);
-        const scrollPos = parseInt(
-          document.querySelector(".results-wrap").offsetTop - 20
-        );
-        console.log(scrollPos);
-        window.scrollTo({
-          top: scrollPos,
+        resultsCompRef.current.scrollIntoView({
+          block: "start",
           behavior: "smooth",
         });
       } catch (error) {
@@ -65,7 +61,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
         {prevURL ? (
           <Buttons
             parentClickFn={() => {
-              onClickHandlerPagination(`${baseUrl}${prevURL}`);
+              onClickHandlerPagination(`${prevURL}`);
             }}
             defaultState={0}
             hideText={false}
@@ -76,9 +72,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
         ) : null}
         {nextURL ? (
           <Buttons
-            parentClickFn={() =>
-              onClickHandlerPagination(`${baseUrl}${nextURL}`)
-            }
+            parentClickFn={() => onClickHandlerPagination(`${nextURL}`)}
             defaultState={0}
             hideText={false}
             btnVersion="secondary"
@@ -108,6 +102,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
         "results-loaded results-wrap contentwidth guttercontentwidthhalf pt-2 pb-2 mb-4 border-radius-1 " +
         classes
       }
+      ref={resultsCompRef}
     >
       <header className="results-header">
         <ResultsNumber resultNum={results.count} />
@@ -132,10 +127,7 @@ const ResultsComponent: React.FC<ResultsComponentProps> = ({
       </div>
       <footer className="results-footer">
         {results.previous || results.next ? (
-          <ResultsPagination
-            prevURL={results.previous}
-            nextURL={results.next}
-          />
+          <ResultsPagination prevURL={results.previous} nextURL={results.next} />
         ) : null}
       </footer>
     </section>
