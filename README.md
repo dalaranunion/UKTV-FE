@@ -1,10 +1,10 @@
 ![In a galaxy far away](./documentation/images/intro-img.webp)
 
-# UKTV - Front-end dev task
+# Front-end project
 
 This repository contains the source code for the App().
 
-Live demo available on Vercel [here](https://uktv-fe-dalaranunions-projects.vercel.app/).
+Live demo available on Vercel [here](https://starwars-api-search-app.vercel.app/).
 
 ## Design / Concept
 
